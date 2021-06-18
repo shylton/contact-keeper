@@ -3,6 +3,9 @@ const connectDB = require('./config/db')
 
 const app = express()
 
+// middleware
+app.use(express.json())
+
 // use env.PORT in production, else 5000
 const PORT = process.env.PORT || 5000
 
