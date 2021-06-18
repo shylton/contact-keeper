@@ -1,9 +1,12 @@
 const express = require('express')
+const connectDB = require('./config/db')
 
 const app = express()
 
 // use env.PORT in production, else 5000
 const PORT = process.env.PORT || 5000
+
+connectDB()
 
 app.get('/', (req, res) => {
     res.json({ msg: 'welcome to contact keeper' })
