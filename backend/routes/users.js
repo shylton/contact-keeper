@@ -53,20 +53,21 @@ router.post(
             user.password = await bcrypt.hash(password, salt)
             await user.save()
 
-            // JWT token
+            // send JWT token
             jwt.sign(
-                {user: {id: user.id}},
-                config.get('jwtSecret'),
-                {expiresIn: 360000},
-                (err, token) => {
-                    if(err) throw err
-                    res.json({token})
+                { user: { id: user.id } },     // payload
+                config.get('jwtSecret'),        // my secret key
+                { expiresIn: 360000 },         // options
+                (err, token) => {              // callback function
+                    if (err) throw err
+                    res.json({ token })
                 }
             )
         } catch (err) {
             console.error(`users.js fail: ${err.message}`)
             res.status(500).send('Server Error') // status 500 = server error
         }
-    })
+    }
+)
 
 module.exports = router

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const UserSchema = mongoose.Schema({
+    // mongoose auto generates the _id required property
     name: {
         type: String,
         required: true

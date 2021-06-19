@@ -24,4 +24,4 @@ app.use(function (req, res, next) {
     res.status(404).send("404 ERROR. Sorry can't find that!")
 })
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`))
+app.listen(PORT, () => console.log(`@server.js: Server listening on port ${PORT}`))
