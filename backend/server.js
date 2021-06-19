@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
     res.json({ msg: 'welcome to contact keeper' })
 })
 
-// Define Routes
+// Define Routes. Think of ea express.Router() class as a mini-app
 app.use('/api/users', require('./routes/users'))
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/contacts', require('./routes/contacts'))

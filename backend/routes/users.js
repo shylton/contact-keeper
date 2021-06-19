@@ -1,6 +1,10 @@
+// this route is used to register a new user to the database
+
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const config = require('config')
 const User = require('../models/User')
 const { check, validationResult } = require('express-validator')
 
@@ -29,13 +33,13 @@ router.post(
             return res.status(400).json({ errors: errors.array() })
         }
 
-        const {name, email, password} = req.body
+        const { name, email, password } = req.body
 
         try {
             let user = await User.findOne({ email }) // ES6: same as {email:email}
 
             // ERROR: user already exits
-            if(user) return res.status(400).json(msgs.userExists)
+            if (user) return res.status(400).json(msgs.userExists)
 
             user = new User({
                 name, // ES6: same as {name:name, ...}
@@ -43,15 +47,26 @@ router.post(
                 password
             })
 
-            // update with salted psw
+            // SALT and HASH password
+            // refactor: bcrypt throw err?
             const salt = await bcrypt.genSalt(10)
             user.password = await bcrypt.hash(password, salt)
             await user.save()
+
+            // JWT token
+            jwt.sign(
+                {user: {id: user.id}},
+                config.get('jwtSecret'),
+                {expiresIn: 360000},
+                (err, token) => {
+                    if(err) throw err
+                    res.json({token})
+                }
+            )
         } catch (err) {
             console.error(`users.js fail: ${err.message}`)
             res.status(500).send('Server Error') // status 500 = server error
         }
-        res.send('good')
     })
 
 module.exports = router
