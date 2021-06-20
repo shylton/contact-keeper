@@ -22,6 +22,7 @@ const msgs = {
  */
 router.post(
     '/',
+    // list of express-validator checks goes in the second param of router
     [
         check('name', msgs.blankName).not().isEmpty(),
         check('email', msgs.badEmail).isEmail(),
