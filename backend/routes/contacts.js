@@ -1,5 +1,14 @@
 const express = require('express')
 const router = express.Router()
+const auth = require('../middleware/auth')
+const { check, validationResult } = require('express-validator')
+
+const User = require('../models/User')
+const Contact = require('../models/Contact')
+
+const msgs = {
+    serverError: 'Server Error.'
+}
 
 // CRUD operations will be done here
 
@@ -8,8 +17,17 @@ const router = express.Router()
  * desc:    [READ] retrieve all user's contacts
  * access:  Private
  */
-router.get('/', (req, res) => {
-    res.send('list of contacts')
+router.get('/', auth, async (req, res) => {
+    try {
+        const contacts = await Contact
+            .find({ user: req.user.id })
+            .sort({ date: -1 })
+
+        res.json(contacts)
+    } catch (err) {
+        console.error(`@routes/contacts.js GET: ${err.message}`)
+        res.status(500).send(msgs.serverError)
+    }
 })
 
 /**
@@ -17,9 +35,37 @@ router.get('/', (req, res) => {
  * desc:    [CREATE] add a new contact
  * access:  Private
  */
-router.post('/', (req, res) => {
-    res.send('Add a contact')
-})
+router.post('/',
+    [  // this is how you use multiple middlewares
+        auth,
+        [
+            check('name', msgs.nameRequired).exists()
+        ]
+    ], 
+    async (req, res) => {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({errors: errors.array()})
+        }
+
+        const {name, email, phone, type} = req.body
+        
+        // allow duplicate contact submission?
+        try {
+            const newContact = new Contact({
+                user: req.user.id,
+                name,
+                email,
+                phone,
+                type
+            })
+            const contact = await newContact.save()
+            res.json(contact)  // SUCCESS
+        } catch (err) {
+            console.error(`@routes/contact.js POST: ${err.message}`)
+            res.status(500).send(msgs.serverError)
+        }
+    })
 
 /**
  * route:   PUT api/contacts/:id
@@ -36,7 +82,7 @@ router.put('/:id', (req, res) => {
  * access:  Private
  */
 router.delete('/:id', (req, res) => {
-    res.send('Update contact')
+    res.send('Delete contact')
 })
 
 module.exports = router
