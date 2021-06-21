@@ -7,7 +7,10 @@ const User = require('../models/User')
 const Contact = require('../models/Contact')
 
 const msgs = {
-    serverError: 'Server Error.'
+    serverError: 'Server Error.',
+    badContact: 'Contact not found.',
+    notAuthorized: 'Not authorized.',
+    contactRm: 'Contact Removed',
 }
 
 // CRUD operations will be done here
@@ -36,7 +39,7 @@ router.get('/', auth, async (req, res) => {
  * access:  Private
  */
 router.post('/',
-    [  // this is how you use multiple middlewares
+    [  // use an array to pass multiple middlewares
         auth,
         [
             check('name', msgs.nameRequired).exists()
@@ -72,8 +75,38 @@ router.post('/',
  * desc:    Update contact
  * access:  Private
  */
-router.put('/:id', (req, res) => {
-    res.send('Update contact')
+router.put('/:id', auth, async (req, res) => {
+    const { name, email, phone, type } = req.body
+
+    // update only fields that were passed in by building below object
+    const updateFields = {}
+    if (name) updateFields.name = name
+    if (email) updateFields.email = email
+    if (phone) updateFields.phone = phone
+    if (type) updateFields.type = type
+
+    try {
+        // req.params.id is the /:id passed in the route
+        let contactToUpdate = await Contact.findById(req.params.id)
+        if (!contactToUpdate) return res.status(404).json({ msg: msgs.badContact })
+
+        // make sure user owns the contact!
+        if (contactToUpdate.user.toString() !== req.user.id) {
+            return res.status(401).send(msgs.notAuthorized)
+        }
+
+        // let mongoose do its magic
+        contactToUpdate = await Contact.findByIdAndUpdate(
+            req.params.id,
+            {$set: updateFields},
+            {new: true} // add field(s) if non existing
+        )
+
+        res.json(contactToUpdate)  // SUCCESS
+    } catch (err) {
+        console.error(`@routes/contact.js PUT: ${err.message}`)
+        res.status(500).send(msgs.serverError)
+    }
 })
 
 /**
@@ -81,8 +114,25 @@ router.put('/:id', (req, res) => {
  * desc:    delete contact
  * access:  Private
  */
-router.delete('/:id', (req, res) => {
-    res.send('Delete contact')
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        // req.params.id is the /:id passed in the route
+        let contactToUpdate = await Contact.findById(req.params.id)
+        if (!contactToUpdate) return res.status(404).json({ msg: msgs.badContact })
+
+        // make sure user owns the contact!
+        if (contactToUpdate.user.toString() !== req.user.id) {
+            return res.status(401).send(msgs.notAuthorized)
+        }
+
+        // let mongoose do its magic
+        await Contact.findByIdAndRemove(req.params.id)
+
+        res.json(msgs.contactRm)  // SUCCESS
+    } catch (err) {
+        console.error(`@routes/contact.js DELETE: ${err.message}`)
+        res.status(500).send(msgs.serverError)
+    }
 })
 
 module.exports = router
