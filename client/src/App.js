@@ -1,11 +1,11 @@
-import './App.css';
+import React from 'react'
 
-function App() {
+import Navbar from './components/layout/Navbar'
+
+
+export default function App() {
+
   return (
-    <div className="App">
-      <h1>Contact Keeper <i className="far fa-address-book"></i></h1>
-    </div>
-  );
+    <Navbar />
+  )
 }
-
-export default App;
