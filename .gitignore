@@ -1,6 +1,6 @@
-backend/node_modules/
-frontend/node_modules/
-backend/config/default.json
+node_modules/
+client/node_modules
+config/default.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,node,visualstudiocode,react
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,node,visualstudiocode,react
