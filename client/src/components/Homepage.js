@@ -1,10 +1,14 @@
 import React from 'react'
+import Contacts from './Contacts'
 
 function HomePage() {
     return (
-        <div>
-            Homepage
-        </div>
+        <React.Fragment>
+            <div>
+                <h2>Homepage</h2>
+            </div>
+            <Contacts />
+        </React.Fragment>
     )
 }
 

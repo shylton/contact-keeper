@@ -21,6 +21,7 @@ app.use('/api/auth', require('./routes/auth'))
 app.use('/api/contacts', require('./routes/contacts'))
 
 app.use(function (req, res, next) {
+    console.log('@server.js: 404 error')
     res.status(404).send("404 ERROR. Sorry can't find that!")
 })
 
