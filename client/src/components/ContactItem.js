@@ -8,6 +8,9 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        maxWidth: 300
+    },
     badgeInfo: {
         textTransform: "none",
         textColor: "green"  // not working, should not use button here
@@ -19,7 +22,7 @@ const ContactItem = ({ data }) => {
     const classes = useStyles()
 
     return (
-        <Paper key={id}>
+        <Paper key={id} className={classes.root}>
             <span>{name}</span>
             <Button
                 disabled

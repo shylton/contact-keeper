@@ -1,14 +1,21 @@
 import React from 'react'
 import Contacts from './Contacts'
+import ContactForm from './ContactForm'
+
+import Grid from '@material-ui/core/Grid'
+
 
 function HomePage() {
+
     return (
-        <React.Fragment>
-            <div>
-                <h2>Homepage</h2>
-            </div>
-            <Contacts />
-        </React.Fragment>
+        <Grid container justify="center">
+            <Grid item>
+                <ContactForm />
+            </Grid>
+            <Grid item>
+                <Contacts />
+            </Grid>
+        </Grid>
     )
 }
 
