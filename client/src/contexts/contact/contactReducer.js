@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import {
     ADD_CONTACT,
     DELETE_CONTACT,
@@ -12,10 +13,13 @@ export default (state, action) => {
     switch (action.type) {
         case ADD_CONTACT:
             return {
-                ...state,
-                contacts: [action.payload, ...state.contacts]
+                contacts: [...state.contacts, action.payload]  // payload is a contact
             }
-    
+        
+            case DELETE_CONTACT:
+                return {
+                    contacts: state.contacts.filter(e => e.id !== action.payload)  // payload is an id
+                }
         default:
             return state
     }

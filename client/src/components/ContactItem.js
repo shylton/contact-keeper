@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
+import contactContext from '../contexts/contact/contactContext'
+
 import { makeStyles } from '@material-ui/core/styles'
 
 import Paper from '@material-ui/core/Paper'
@@ -18,8 +20,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ContactItem = ({ data }) => {
+    const context = useContext(contactContext)
     const { id, name, email, phone, type } = data
     const classes = useStyles()
+
+    const deleteContact = () => {
+        context.deleteContact(id)  // id was destructured from 'data' earlier
+    }
+    
 
     return (
         <Paper key={id} className={classes.root}>
@@ -47,7 +55,7 @@ const ContactItem = ({ data }) => {
                 }
             </List>
             <Button variant="contained" color="primary">Edit</Button>
-            <Button variant="contained">Delete</Button>
+            <Button variant="contained" onClick={ deleteContact }>Delete</Button>
         </Paper>
     )
 }
@@ -59,7 +67,7 @@ ContactItem.propTypes = {
         email: PropTypes.string,
         phone: PropTypes.string,
         type: PropTypes.string,
-    }),
+    }).isRequired,
 }
 
 export default ContactItem
