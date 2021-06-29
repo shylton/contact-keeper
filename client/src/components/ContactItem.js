@@ -26,6 +26,7 @@ const ContactItem = ({ data }) => {
 
     const deleteContact = () => {
         context.deleteContact(id)  // id was destructured from 'data' earlier
+        context.clearCurrent()
     }
     
 
@@ -54,7 +55,7 @@ const ContactItem = ({ data }) => {
                     </React.Fragment>)
                 }
             </List>
-            <Button variant="contained" color="primary">Edit</Button>
+            <Button variant="contained" color="primary" onClick={ () => context.setCurrent(data) }>Edit</Button>
             <Button variant="contained" onClick={ deleteContact }>Delete</Button>
         </Paper>
     )

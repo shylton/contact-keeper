@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import contactContext from '../contexts/contact/contactContext'
 
 import TextField from '@material-ui/core/TextField'
@@ -26,12 +26,21 @@ const defaultContact = {
     type: 'personal',
 }
 
-// stopped at 8:45 in video
 export default function ContactForm() {
+    // HOOKS
     const classes = useStyles()
     const [contact, setContact] = useState(defaultContact)
-
     const context = useContext(contactContext)
+
+    const { current, addContact, clearCurrent, updateContact } = context
+
+    useEffect(() => {
+        if(current !== null) {
+            setContact(current)
+        } else {
+            setContact(defaultContact)
+        }
+    }, [context, current])
 
     const handleChange = (event) => {
         setContact({ ...contact, [event.target.name]: event.target.value })
@@ -39,13 +48,22 @@ export default function ContactForm() {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        context.addContact(contact)
+        if (current) {
+            updateContact(contact)
+        } else {
+            addContact(contact)
+        }
+        
         setContact(defaultContact)
     }
 
+    const clearAll = () => {
+        clearCurrent()
+    }
+    
     return (
         <form className={classes.root} autoComplete="off" onSubmit={handleSubmit}>
-            <h2>Add Contact</h2>
+            <h2>{current ? 'Edit Contact' : 'Add Contact'}</h2>
             <div>
                 <TextField
                     type="text"
@@ -81,9 +99,14 @@ export default function ContactForm() {
             </div>
             <div>
                 <Button type="submit" fullWidth variant='contained' >
-                    Add Contact
+                    {current ? 'Update Contact' : 'Add Contact'}
                 </Button>
             </div>
+            {current && (
+                <div>
+                    <Button fullWidth variant='outlined' onClick={clearAll}>Clear</Button>
+                </div>
+            )}
         </form>
     )
 }
