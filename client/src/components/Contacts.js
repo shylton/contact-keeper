@@ -1,9 +1,6 @@
 import React, { useContext } from 'react'
 import contactContext from '../contexts/contact/contactContext'
-import ContactForm from './ContactForm'
 import { makeStyles } from '@material-ui/core/styles'
-
-import Grid from '@material-ui/core/Grid'
 
 import ContactItem from './ContactItem'
 
