@@ -4,8 +4,6 @@ import { Link as RouterLink } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 import Link from '@material-ui/core/Link'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -33,14 +31,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function Register() {
+export default function Login() {
     const classes = useStyles()
     const [user, setUser] = useState({
-        firstName: '',
-        lastName: '',
         email: '',
-        password: '',
-        password2: ''
+        password: ''
     })
 
     const handleChange = (evt) => {
@@ -58,37 +53,10 @@ export default function Register() {
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}></Avatar>
                 <Typography component="h1" variant="h5">
-                    Register
+                    Log In
                 </Typography>
                 <form className={classes.form} noValidate onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                autoComplete="fname"
-                                name="firstName"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="firstName"
-                                label="First Name"
-                                value={user.firstName}
-                                onChange={handleChange}
-                                autoFocus
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="lname"
-                                value={user.lastName}
-                                onChange={handleChange}
-                            />
-                        </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -116,26 +84,6 @@ export default function Register() {
                                 onChange={handleChange}
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password2"
-                                label="Password2"
-                                type="password"
-                                id="password2"
-                                autoComplete="current-password"
-                                value={user.password2}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
-                            />
-                        </Grid>
                     </Grid>
                     <Button
                         type="submit"
@@ -144,12 +92,12 @@ export default function Register() {
                         color="primary"
                         className={classes.submit}
                     >
-                        Register
+                        Log In
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link component={RouterLink} to='/login' variant="body2">
-                                Already have an account? Sign in
+                            <Link component={RouterLink} to='/register' variant="body2">
+                                Don't have an account? Click to register
                             </Link>
                         </Grid>
                     </Grid>

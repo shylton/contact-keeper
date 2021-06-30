@@ -8,6 +8,7 @@ import Navbar from './components/Navbar'
 import Homepage from './components/Homepage'
 import About from './components/About'
 import Register from './components/Register'
+import Login from './components/Login'
 
 export default function App() {
 
@@ -22,6 +23,7 @@ export default function App() {
                 <Route exact path='/' component={Homepage} />
                 <Route path='/about' component={About} />
                 <Route path='/register' component={Register} />
+                <Route path='/login' component={Login} />
               </Switch>
             </Container>
           </React.Fragment>
