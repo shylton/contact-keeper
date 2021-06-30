@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react'
+import axios from 'axios'
 import AuthContext from './AuthContext'
 import authReducer from './authReducer'
 import {
@@ -24,10 +25,23 @@ const AuthState = (props) => {
     const [state, dispatch] = useReducer(authReducer, initialState)
 
     // actions go here
-    const registerUser = (params) => {
-        dispatch({ type: REGISTER_SUCCESS, })
+    const registerUser = async (formData) => {
+        //axios config
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        try {
+            const res = await axios.post('/api/users', formData, config)  // no need for 'http:...' due to "proxy" in package.json
+            dispatch({ type: REGISTER_SUCCESS, payload: res.data })  // res.data = token
+        } catch (err) {
+            // err = status 400
+            dispatch({ type: REGISTER_FAIL, payload: err.response.data.msg })
+        }
     }
-    
+
 
     return (
         <AuthContext.Provider
@@ -37,6 +51,7 @@ const AuthState = (props) => {
                 user: state.user,
                 loading: state.loading,
                 error: state.error,
+                registerUser
             }}
         >
             {props.children}

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+import AuthContext from '../contexts/auth/AuthContext'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -35,13 +36,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Register() {
     const classes = useStyles()
+    const context = useContext(AuthContext)  // no me gusta same names
     const [user, setUser] = useState({
-        firstName: '',
-        lastName: '',
+        name: '',
         email: '',
         password: '',
         password2: ''
     })
+
+    const { name, email, password } = user
 
     const handleChange = (evt) => {
         setUser({ ...user, [evt.target.id]: evt.target.value })
@@ -49,7 +52,11 @@ export default function Register() {
 
     const handleSubmit = (evt) => {
         evt.preventDefault()
-        console.log(user)
+        context.registerUser({
+            name,
+            email,
+            password
+        })
     }
 
 
@@ -62,21 +69,21 @@ export default function Register() {
                 </Typography>
                 <form className={classes.form} onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
                             <TextField
-                                autoComplete="fname"
-                                name="firstName"
+                                autoComplete="name"
+                                name="name"
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="firstName"
-                                label="First Name"
-                                value={user.firstName}
+                                id="name"
+                                label="Name"
+                                value={user.name}
                                 onChange={handleChange}
                                 autoFocus
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        {/* <Grid item xs={12} sm={6}>
                             <TextField
                                 variant="outlined"
                                 required
@@ -88,7 +95,7 @@ export default function Register() {
                                 value={user.lastName}
                                 onChange={handleChange}
                             />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12}>
                             <TextField
                                 type='email'
