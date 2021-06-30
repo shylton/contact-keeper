@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,8 +56,10 @@ const ContactItem = ({ data }) => {
                     </React.Fragment>)
                 }
             </List>
-            <Button variant="contained" color="primary" onClick={ () => context.setCurrent(data) }>Edit</Button>
-            <Button variant="contained" onClick={ deleteContact }>Delete</Button>
+            <ButtonGroup fullWidth variant="contained">
+                <Button color="primary" onClick={ () => context.setCurrent(data) }>Edit</Button>
+                <Button onClick={ deleteContact }>Delete</Button>
+            </ButtonGroup>
         </Paper>
     )
 }

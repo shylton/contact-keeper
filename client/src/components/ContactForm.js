@@ -55,6 +55,7 @@ export default function ContactForm() {
         }
         
         setContact(defaultContact)
+        clearCurrent()
     }
 
     const clearAll = () => {
