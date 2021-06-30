@@ -12,7 +12,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxWidth: 300
+        maxWidth: 300,
     },
     badgeInfo: {
         textTransform: "none",
@@ -32,7 +32,7 @@ const ContactItem = ({ data }) => {
     
 
     return (
-        <Paper key={id} className={classes.root}>
+        <Paper className={classes.root}>
             <span>{name}</span>
             <Button
                 disabled
@@ -66,7 +66,7 @@ const ContactItem = ({ data }) => {
 
 ContactItem.propTypes = {
     data: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.isRequired,
         name: PropTypes.string,
         email: PropTypes.string,
         phone: PropTypes.string,
