@@ -7,6 +7,7 @@ import AuthState from './contexts/auth/AuthState'
 import Navbar from './components/Navbar'
 import Homepage from './components/Homepage'
 import About from './components/About'
+import Register from './components/Register'
 
 export default function App() {
 
@@ -20,6 +21,7 @@ export default function App() {
               <Switch>
                 <Route exact path='/' component={Homepage} />
                 <Route path='/about' component={About} />
+                <Route path='/register' component={Register} />
               </Switch>
             </Container>
           </React.Fragment>
