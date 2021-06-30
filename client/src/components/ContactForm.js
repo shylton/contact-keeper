@@ -71,7 +71,9 @@ export default function ContactForm() {
                     name="name"
                     label="Name"
                     value={contact.name}
-                    onChange={handleChange} />
+                    onChange={handleChange}
+                    autoFocus
+                />
             </div>
             <div>
                 <TextField

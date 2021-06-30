@@ -68,6 +68,7 @@ export default function Login() {
                                 autoComplete="email"
                                 value={user.email}
                                 onChange={handleChange}
+                                autoFocus
                             />
                         </Grid>
                         <Grid item xs={12}>
