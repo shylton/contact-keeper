@@ -31,7 +31,7 @@ router.post(
     async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() })
+            return res.status(400).json(errors.array()[0])  // deal w one at a time. format => { "msg": string }
         }
 
         const { name, email, password } = req.body
@@ -40,7 +40,7 @@ router.post(
             let user = await User.findOne({ email }) // ES6: same as {email:email}
 
             // ERROR: user already exits
-            if (user) return res.status(400).json(msgs.userExists)
+            if (user) return res.status(400).json({ msg: msgs.userExists })
 
             user = new User({
                 name, // ES6: same as {name:name, ...}
@@ -65,7 +65,7 @@ router.post(
                 }
             )
         } catch (err) {
-            console.error(`users.js fail: ${err.message}`)
+            console.error(`@users.js fail: ${err.message}`)
             res.status(500).send('Server Error') // status 500 = server error
         }
     }

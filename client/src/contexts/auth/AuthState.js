@@ -38,7 +38,7 @@ const AuthState = (props) => {
             dispatch({ type: REGISTER_SUCCESS, payload: res.data })  // res.data = token
         } catch (err) {
             // err = status 400
-            dispatch({ type: REGISTER_FAIL, payload: err.response.data })
+            dispatch({ type: REGISTER_FAIL, payload: err.response.data.msg })
         }
     }
 
