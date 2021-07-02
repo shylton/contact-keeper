@@ -22,7 +22,8 @@ export default (state, action) => {
                 ...state,
                 ...action.payload,
                 isAuthenticated: true,
-                loading: false
+                loading: false,
+                error: null
             }
         case REGISTER_FAIL:
             localStorage.removeItem('token')

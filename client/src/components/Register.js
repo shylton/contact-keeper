@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import AuthContext from '../contexts/auth/AuthContext'
 
@@ -12,8 +12,7 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import Snackbar from '@material-ui/core/Snackbar'
-
+import Alert from '@material-ui/lab/Alert'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -35,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+// ### REGISTER COMPONENT ###
 export default function Register() {
     const classes = useStyles()
     const context = useContext(AuthContext)  // no me gusta same names
@@ -44,8 +44,33 @@ export default function Register() {
         password: '',
         password2: ''
     })
+    const [alertType, setAlertType] = useState('init')
 
     const { name, email, password } = user
+
+    const myAlert = () => {
+        switch (alertType) {
+            case 'fail':
+                return <Alert severity='error'>{context.error}</Alert>
+            case 'success':
+                return <Alert severity='success'>User Registered!</Alert>
+
+            default:
+                return null;
+        }
+
+    }
+
+    // Handle alerts with useEffect
+    useEffect(() => {
+        if (context.error === 'init') {
+            return
+        } else if (context.error === null) { // set to null on success, reset to init?
+            setAlertType('success')
+        } else {
+            setAlertType('fail')
+        }
+    }, [context.error])
 
     const handleChange = (evt) => {
         setUser({ ...user, [evt.target.id]: evt.target.value })
@@ -59,10 +84,11 @@ export default function Register() {
             password
         })
     }
-    const open = true
+    
 
     return (
         <Container component="main" maxWidth="xs">
+            {myAlert()}
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}></Avatar>
                 <Typography component="h1" variant="h5">
