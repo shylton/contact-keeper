@@ -49,7 +49,7 @@ router.post('/',
     async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
-            return res.status(400).json({ msg: errors.array() }) // 400 = bad request
+            return res.status(400).json({ errors: errors.array() }) // 400 = bad request
         }
 
         const { email, password } = req.body
