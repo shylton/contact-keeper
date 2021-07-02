@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // ### REGISTER COMPONENT ###
-export default function Register() {
+export default function Register(props) {
     const classes = useStyles()
     const context = useContext(AuthContext)  // no me gusta same names
     const [user, setUser] = useState({
@@ -63,6 +63,9 @@ export default function Register() {
 
     // Handle alerts with useEffect
     useEffect(() => {
+        if (context.isAuthenticated) {
+            props.history.push('/')  // go to homepage
+        }
         if (context.error === 'init') {
             return
         } else if (context.error === null) { // set to null on success, reset to init?
@@ -70,7 +73,7 @@ export default function Register() {
         } else {
             setAlertType('fail')
         }
-    }, [context.error])
+    }, [context.error, context.isAuthenticated, props.history])
 
     const handleChange = (evt) => {
         setUser({ ...user, [evt.target.id]: evt.target.value })

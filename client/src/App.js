@@ -9,6 +9,10 @@ import Homepage from './components/Homepage'
 import About from './components/About'
 import Register from './components/Register'
 import Login from './components/Login'
+import setAuthToken from './utils/setAuthToken'
+
+// set global header, used for page reloads
+setAuthToken(localStorage.token)
 
 export default function App() {
 
