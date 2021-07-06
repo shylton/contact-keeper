@@ -10,6 +10,7 @@ import About from './components/About'
 import Register from './components/Register'
 import Login from './components/Login'
 import setAuthToken from './utils/setAuthToken'
+import PrivateRoute from './components/PrivateRoute'
 
 // set global header, used for page reloads
 setAuthToken(localStorage.token)
@@ -24,7 +25,7 @@ export default function App() {
             <Navbar />
             <Container>
               <Switch>
-                <Route exact path='/' component={Homepage} />
+                <PrivateRoute exact path='/' component={Homepage} />
                 <Route path='/about' component={About} />
                 <Route path='/register' component={Register} />
                 <Route path='/login' component={Login} />
