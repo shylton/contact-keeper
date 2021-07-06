@@ -17,11 +17,11 @@ function HomePage() {
     return (
         <Grid container justify="center" spacing={5}>
             <Grid item>
-                <ContactForm />
-            </Grid>
-            <Grid item>
                 <Typography variant='h4'>Contact List</Typography>
                 <Contacts />
+            </Grid>
+            <Grid item>
+                <ContactForm />
             </Grid>
         </Grid>
     )
