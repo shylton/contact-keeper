@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+import AuthContext from '../contexts/auth/AuthContext'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -9,6 +10,7 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import Alert from '@material-ui/lab/Alert'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,12 +33,44 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function Login() {
+export default function Login(props) {
     const classes = useStyles()
+    const context = useContext(AuthContext)  // no me gusta same names
     const [user, setUser] = useState({
         email: '',
         password: ''
     })
+
+    const [alertType, setAlertType] = useState('init')
+
+    const { email, password } = user
+
+    const myAlert = () => {
+        switch (alertType) {
+            case 'fail':
+                return <Alert severity='error'>{context.error}</Alert>
+            case 'success':
+                return <Alert severity='success'>User Registered!</Alert>
+
+            default:
+                return null;
+        }
+
+    }
+
+    // Handle alerts with useEffect
+    useEffect(() => {
+        if (context.isAuthenticated) {
+            props.history.push('/')  // go to homepage
+        }
+        if (context.error === 'init') {
+            return
+        } else if (context.error === null) { // set to null on success, reset to init?
+            setAlertType('success')
+        } else {
+            setAlertType('fail')
+        }
+    }, [context.error, context.isAuthenticated, props.history])
 
     const handleChange = (evt) => {
         setUser({ ...user, [evt.target.id]: evt.target.value })
@@ -44,12 +78,16 @@ export default function Login() {
 
     const handleSubmit = (evt) => {
         evt.preventDefault()
-        console.log(user)
+        context.login({
+            email,
+            password
+        })
     }
 
 
     return (
         <Container component="main" maxWidth="xs">
+            {myAlert()}
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}></Avatar>
                 <Typography component="h1" variant="h5">

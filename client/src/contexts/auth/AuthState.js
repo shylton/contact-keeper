@@ -36,11 +36,11 @@ const AuthState = (props) => {
 
         try {
             const res = await axios.post('/api/users', formData, config)  // no need for 'http:...' due to "proxy" in package.json
-            dispatch({ type: REGISTER_SUCCESS, payload: res.data })  // res.data = token
+            dispatch({ type: LOGIN_SUCCESS, payload: res.data })  // res.data = token
             loadUser()
         } catch (err) {
             // err = status 400
-            dispatch({ type: REGISTER_FAIL, payload: err.response.data.msg })
+            dispatch({ type: LOGIN_FAIL, payload: err.response.data.msg })
         }
     }
 
@@ -63,6 +63,27 @@ const AuthState = (props) => {
         }
     }
     
+    /**
+     * LOGIN api 
+     * @param formData { "email": string, "password": string }
+     */
+    const login = async (formData) => {
+        //axios config
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        try {
+            const res = await axios.post('/api/auth', formData, config)  // no need for 'http:...' due to "proxy" in package.json
+            dispatch({ type: REGISTER_SUCCESS, payload: res.data })  // res.data = token
+            loadUser()
+        } catch (err) {
+            // err = status 400
+            dispatch({ type: REGISTER_FAIL, payload: err.response.data.msg })
+        }
+    }
 
     return (
         <AuthContext.Provider
@@ -74,7 +95,8 @@ const AuthState = (props) => {
                 error: state.error,
                 registerUser,
                 resetError,
-                loadUser
+                loadUser,
+                login
             }}
         >
             {props.children}

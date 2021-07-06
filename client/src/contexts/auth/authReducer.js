@@ -29,6 +29,7 @@ export default (state, action) => {
                 loading: false,
                 error: null
             }
+        case LOGIN_FAIL:
         case AUTH_ERROR:
         case REGISTER_FAIL:
             localStorage.removeItem('token')
@@ -40,7 +41,6 @@ export default (state, action) => {
                 user: null,
                 error: action.payload
             }
-        case LOGIN_FAIL:
         case LOGOUT:
             break;
         case CLEAR_ERRORS:
