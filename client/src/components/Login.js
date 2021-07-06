@@ -44,11 +44,12 @@ export default function Login(props) {
     const [alertType, setAlertType] = useState('init')
 
     const { email, password } = user
+    const { error, isAuthenticated, login } = context
 
     const myAlert = () => {
         switch (alertType) {
             case 'fail':
-                return <Alert severity='error'>{context.error}</Alert>
+                return <Alert severity='error'>{error}</Alert>
             case 'success':
                 return <Alert severity='success'>User Registered!</Alert>
 
@@ -60,17 +61,18 @@ export default function Login(props) {
 
     // Handle alerts with useEffect
     useEffect(() => {
-        if (context.isAuthenticated) {
+        if (isAuthenticated) {
             props.history.push('/')  // go to homepage
         }
-        if (context.error === 'init') {
+        if (error === 'init' || error === undefined) {
+            // error = undef after homepage is loaded initially due to call to loaduser()
             return
-        } else if (context.error === null) { // set to null on success, reset to init?
+        } else if (error === null) { // set to null on success, reset to init?
             setAlertType('success')
         } else {
             setAlertType('fail')
         }
-    }, [context.error, context.isAuthenticated, props.history])
+    }, [error, isAuthenticated, props.history])
 
     const handleChange = (evt) => {
         setUser({ ...user, [evt.target.id]: evt.target.value })
@@ -78,7 +80,7 @@ export default function Login(props) {
 
     const handleSubmit = (evt) => {
         evt.preventDefault()
-        context.login({
+        login({
             email,
             password
         })

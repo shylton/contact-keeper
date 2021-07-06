@@ -17,6 +17,11 @@ const theme = createMuiTheme({
             default: '#fff',
         },
     },
+    overrides: {
+        MuiButton : {
+            text: { textTransform: 'none'}
+        }
+    }
 });
 
 export default theme;

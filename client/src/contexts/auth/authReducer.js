@@ -10,6 +10,10 @@ import {
     CLEAR_ERRORS
 } from '../types'
 
+// note on state.error => this is used to display alerts.
+//    'init' or undefined => no alert
+//    null => success alert
+//    'error msg' => fail alert + message
 export default (state, action) => {
     switch (action.type) {
         case USER_LOADED:
@@ -17,7 +21,8 @@ export default (state, action) => {
                 ...state,
                 isAuthenticated: true,
                 loading: false,
-                user: action.payload
+                user: action.payload,
+                error: 'init'
             }
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
@@ -30,6 +35,7 @@ export default (state, action) => {
                 error: null
             }
         case LOGIN_FAIL:
+        case LOGOUT:
         case AUTH_ERROR:
         case REGISTER_FAIL:
             localStorage.removeItem('token')
@@ -41,8 +47,6 @@ export default (state, action) => {
                 user: null,
                 error: action.payload
             }
-        case LOGOUT:
-            break;
         case CLEAR_ERRORS:
             return {
                 ...state,

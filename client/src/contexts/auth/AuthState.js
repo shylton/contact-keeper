@@ -25,7 +25,9 @@ const AuthState = (props) => {
 
     const [state, dispatch] = useReducer(authReducer, initialState)
 
-    // ### ACTIONS ###
+    /**
+     * REGISTER a new user (must b async since making a backend req)
+     */
     const registerUser = async (formData) => {
         //axios config
         const config = {
@@ -44,9 +46,14 @@ const AuthState = (props) => {
         }
     }
 
+    /**
+     * RESET context.error to 'init'
+     */
     const resetError = () => dispatch({ type: CLEAR_ERRORS })
 
-    // LOADUSER must b async because its making backend request
+    /**
+     * LOAD USER data to context.user
+     */
     const loadUser = async () => {
         // set global header for pesistence
         setAuthToken(localStorage.token)
@@ -85,6 +92,13 @@ const AuthState = (props) => {
         }
     }
 
+    /**
+     * LOGOUT
+     */
+    const logout = () => {
+        dispatch({ type: LOGOUT, payload: 'init' })
+    }
+
     return (
         <AuthContext.Provider
             value={{
@@ -96,7 +110,8 @@ const AuthState = (props) => {
                 registerUser,
                 resetError,
                 loadUser,
-                login
+                login,
+                logout
             }}
         >
             {props.children}
