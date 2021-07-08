@@ -22,11 +22,11 @@ const useStyles = makeStyles((theme) => ({
 
 const ContactItem = ({ data }) => {
     const context = useContext(contactContext)
-    const { id, name, email, phone, type } = data
+    const { _id, name, email, phone, type } = data
     const classes = useStyles()
 
     const deleteContact = () => {
-        context.deleteContact(id)  // id was destructured from 'data' earlier
+        context.deleteContact(_id)  // id was destructured from 'data' earlier
         context.clearCurrent()
     }
     

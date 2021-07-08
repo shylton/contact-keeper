@@ -48,8 +48,29 @@ const ContactState = (props) => {
 
     }
 
-    const deleteContact = (id) => {
-        dispatch({ type: DELETE_CONTACT, payload: id })
+    const updateContact = async (contact) => {
+        // token not set, its an axios global var with setToken()
+        const config = {
+            headers: { 'Content-Type': 'application/json' }
+        }
+
+        try {
+            const res = await axios.put(`/api/contacts/${contact._id}`, contact, config)
+            dispatch({ type: UPDATE_CONTACT, payload: res.data })
+        } catch (err) {
+            dispatch({ type: CONTACT_ERROR, payload: err.response.msg })
+        }
+
+    }
+
+    const deleteContact = async (id) => {
+        try {
+            await axios.delete(`/api/contacts/${id}`)
+            dispatch({ type: DELETE_CONTACT, payload: id })
+        } catch (err) {
+            dispatch({ type: CONTACT_ERROR, payload: err.response.msg })
+        }
+        
     }
     
     const setCurrent = (contact) => {
@@ -58,10 +79,6 @@ const ContactState = (props) => {
     
     const clearCurrent = () => {
         dispatch({ type: CLEAR_CURRENT })
-    }
-
-    const updateContact = (contact) => {
-        dispatch({ type: UPDATE_CONTACT, payload: contact })
     }
 
     return (
