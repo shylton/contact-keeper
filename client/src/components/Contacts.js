@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import contactContext from '../contexts/contact/contactContext'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -17,13 +17,21 @@ const useStyles = makeStyles((theme) => ({
 
 const Contacts = () => {
     const classes = useStyles()
-    let contactList = useContext(contactContext)
-    contactList = contactList.contacts
+    const context = useContext(contactContext)
+    const { contacts, getContacts } = context
 
+    useEffect(() => {
+        getContacts()
+        // eslint-disable-next-line
+    }, [])
+
+
+    // TODO: make a spinner for loading contacts
+    // bug: shows msg on reload since initial state is lenght zero
     return (
-        contactList.length === 0 
+        contacts.length === 0 
         ? <div>Please add a contact</div>
-        : contactList.map((e) => (
+        : contacts.map((e) => (
             <div key={e._id} className={classes.contactList}>
                 <ContactItem data={e} />
             </div>
