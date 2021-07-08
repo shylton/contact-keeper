@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import contactContext from '../contexts/contact/contactContext'
 import { makeStyles } from '@material-ui/core/styles'
-import uuid from 'uuid'
 
 import ContactItem from './ContactItem'
 
@@ -22,8 +21,10 @@ const Contacts = () => {
     contactList = contactList.contacts
 
     return (
-        contactList.map((e) => (
-            <div key={uuid.v4()} className={classes.contactList}>
+        contactList.length === 0 
+        ? <div>Please add a contact</div>
+        : contactList.map((e) => (
+            <div key={e._id} className={classes.contactList}>
                 <ContactItem data={e} />
             </div>
         ))

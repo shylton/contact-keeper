@@ -5,6 +5,7 @@ import {
     SET_CURRENT,
     CLEAR_CURRENT,
     UPDATE_CONTACT,
+    CONTACT_ERROR,
 } from '../types'
 
 export default (state, action) => {
@@ -18,7 +19,7 @@ export default (state, action) => {
         case DELETE_CONTACT:
             return {
                 ...state,
-                contacts: state.contacts.filter(e => e.id !== action.payload)  // payload is an id
+                contacts: state.contacts.filter(e => e._id !== action.payload)  // payload is an id
             }
 
         case SET_CURRENT:
@@ -37,9 +38,14 @@ export default (state, action) => {
             return {
                 ...state,
                 contacts: state.contacts.map(contact => 
-                    contact.id === action.payload.id ? action.payload : contact)
+                    contact._id === action.payload.id ? action.payload : contact)
             }
 
+        case CONTACT_ERROR:
+            return {
+                ...state,
+                error: action.payload
+            }
         default:
             return state
     }
